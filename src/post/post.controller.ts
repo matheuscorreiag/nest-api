@@ -7,7 +7,7 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Get('/')
-  getPosts() {
+  async getPosts() {
     return this.postService.getPosts();
   }
 

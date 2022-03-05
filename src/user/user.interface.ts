@@ -1,4 +1,4 @@
-import { IPost } from './post.interface';
+import { IPost } from '../post/post.interface';
 
 export interface IUser {
   id?: string;
