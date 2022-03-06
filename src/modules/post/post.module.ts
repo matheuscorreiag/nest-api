@@ -3,7 +3,7 @@ import { PostService } from './post.service';
 import { PostController } from './post.controller';
 
 @Module({
-  providers: [PostService],
-  controllers: [PostController]
+  controllers: [PostController],
+  providers: [PostService]
 })
 export class PostModule {}
