@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import prisma from 'src/database';
 import { IAuthUser } from 'src/interfaces';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -8,13 +8,14 @@ import { UpdatePostDto } from './dto/update-post.dto';
 export class PostService {
   async create({ name, description }: CreatePostDto, req: any) {
     const user: IAuthUser = req.user;
+
     const data = await prisma.post.create({
       data: {
         name,
         description,
         user: {
           connect: {
-            id: user.id,
+            id: user?.id,
           },
         },
       },
@@ -22,8 +23,11 @@ export class PostService {
     return data;
   }
 
-  findAll() {
-    return `This action returns all post`;
+  async findAll() {
+    const data = await prisma.post.findMany();
+
+    if (data.length === 0) throw new NotFoundException();
+    return { statusCode: 200, data };
   }
 
   findAllByUser(id: number) {

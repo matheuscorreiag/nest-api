@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import prisma from 'src/database';
+import { selectUser } from 'src/prisma/select';
 import { SALT_ROUNDS } from './constants';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -8,7 +9,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 @Injectable()
 export class UserService {
   async getUser() {
-    const data = await prisma.user.findMany({ include: { post: true } });
+    const data = await prisma.user.findMany({ select: selectUser });
 
     if (data.length === 0) throw new NotFoundException('No users found');
     return { statusCode: 200, data };
@@ -21,7 +22,7 @@ export class UserService {
     return { statusCode: 200, data: user };
   }
   async create({ email, name, password, role }: CreateUserDto) {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
     return await prisma.user.create({
       data: {
         name,
