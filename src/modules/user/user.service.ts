@@ -19,11 +19,12 @@ export class UserService {
 
     return { statusCode: 200, data: user };
   }
-  async create({ email, name, password }: CreateUserDto) {
+  async create({ email, name, password, role }: CreateUserDto) {
     return await prisma.user.create({
       data: {
         name,
         email,
+        role,
         password,
       },
     });
