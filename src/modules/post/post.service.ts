@@ -1,16 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import prisma from 'src/database';
+import { IAuthUser } from 'src/interfaces';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
 @Injectable()
 export class PostService {
-  async create({ name, description }: CreatePostDto) {
+  async create({ name, description }: CreatePostDto, user: IAuthUser) {
     const data = await prisma.post.create({
       data: {
         name,
         description,
-        user: {},
+        user: {
+          connect: {
+            id: user?.id,
+          },
+        },
       },
     });
     return data;
