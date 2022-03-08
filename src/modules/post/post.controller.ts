@@ -33,7 +33,7 @@ export class PostController {
 
   @Get('/:id')
   findAllByUser(@Param('id') id: string) {
-    return this.postService.findAllByUser(+id);
+    return this.postService.findAllByUser(id);
   }
 
   @Put('/:id')

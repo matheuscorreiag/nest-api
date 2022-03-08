@@ -30,8 +30,15 @@ export class PostService {
     return { statusCode: 200, data };
   }
 
-  findAllByUser(id: number) {
-    return `This action returns a #${id} post`;
+  async findAllByUser(id: string) {
+    const data = await prisma.post.findMany({
+      where: {
+        id,
+      },
+    });
+
+    if (data.length === 0) throw new NotFoundException();
+    return { statusCode: 200, data };
   }
 
   update(id: number, updatePostDto: UpdatePostDto) {
