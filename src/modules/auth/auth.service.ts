@@ -1,10 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import prisma from 'src/database';
+import * as bcrypt from 'bcrypt';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { JwtService } from '@nestjs/jwt';
-
-import { jwtConstants } from './constants';
-
+import InvalidCredentialsException from 'src/errors/InvalidCredentialsException';
 @Injectable()
 export class AuthService {
   constructor(private jwtService: JwtService) {}
@@ -12,12 +11,13 @@ export class AuthService {
     const user = await prisma.user.findFirst({
       where: {
         email,
-        password,
       },
     });
 
-    if (!user) {
-      throw new NotFoundException('Invalid credentials');
+    const isMatch = await bcrypt.compare(password, user?.password || '');
+
+    if (!user || !isMatch) {
+      throw new InvalidCredentialsException();
     }
 
     const payload = {

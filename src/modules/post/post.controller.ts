@@ -8,6 +8,7 @@ import {
   Put,
   HttpCode,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -23,8 +24,8 @@ export class PostController {
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   @Post('/create')
-  create(@Body() createPostDto: CreatePostDto, @AuthUser() user: IAuthUser) {
-    return this.postService.create(createPostDto, user);
+  create(@Body() createPostDto: CreatePostDto, @Req() req: any) {
+    return this.postService.create(createPostDto, req);
   }
 
   @Get()

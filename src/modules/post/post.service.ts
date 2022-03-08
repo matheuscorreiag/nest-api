@@ -6,14 +6,15 @@ import { UpdatePostDto } from './dto/update-post.dto';
 
 @Injectable()
 export class PostService {
-  async create({ name, description }: CreatePostDto, user: IAuthUser) {
+  async create({ name, description }: CreatePostDto, req: any) {
+    const user: IAuthUser = req.user;
     const data = await prisma.post.create({
       data: {
         name,
         description,
         user: {
           connect: {
-            id: user?.id,
+            id: user.id,
           },
         },
       },
