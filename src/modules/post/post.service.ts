@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import prisma from 'src/database';
-import { IAuthUser } from 'src/interfaces';
+import ErrorResponse from 'src/errors/ErrorResponse';
+import { IAuthUser, PrismaCatchError } from 'src/interfaces';
+import { ApiResponse } from 'src/shared/responses/response';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
@@ -9,18 +11,22 @@ export class PostService {
   async create({ name, description }: CreatePostDto, req: any) {
     const user: IAuthUser = req.user;
 
-    const data = await prisma.post.create({
-      data: {
-        name,
-        description,
-        user: {
-          connect: {
-            id: user?.id,
+    const data = await prisma.post
+      .create({
+        data: {
+          name,
+          description,
+          user: {
+            connect: {
+              id: user?.id,
+            },
           },
         },
-      },
-    });
-    return data;
+      })
+      .catch((err) => {
+        throw new ErrorResponse(err.meta.cause);
+      });
+    return { statusCode: 200, data };
   }
 
   async findAll() {
@@ -30,10 +36,10 @@ export class PostService {
     return { statusCode: 200, data };
   }
 
-  async findAllByUser(id: string) {
+  async findAllByUser(userId: string) {
     const data = await prisma.post.findMany({
       where: {
-        id,
+        userId,
       },
     });
 
@@ -41,11 +47,34 @@ export class PostService {
     return { statusCode: 200, data };
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  async update(id: string, updatePostDto: UpdatePostDto): Promise<ApiResponse> {
+    const { name, description } = updatePostDto;
+
+    const data = await prisma.post
+      .update({
+        where: {
+          id,
+        },
+        data: {
+          name,
+          description,
+        },
+      })
+      .catch((err: PrismaCatchError) => {
+        throw new ErrorResponse(err.meta.cause);
+      });
+
+    return { statusCode: 200, data };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  async remove(id: string) {
+    const data = await prisma.post
+      .delete({
+        where: { id },
+      })
+      .catch((err: PrismaCatchError) => {
+        throw new ErrorResponse(err.meta.cause);
+      });
+    return { statusCode: 200, data };
   }
 }

@@ -14,6 +14,7 @@ import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
+import { ApiResponse } from 'src/shared/responses/response';
 
 @Controller('post')
 export class PostController {
@@ -22,27 +23,33 @@ export class PostController {
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   @Post('/create')
-  create(@Body() createPostDto: CreatePostDto, @Req() req: any) {
+  create(
+    @Body() createPostDto: CreatePostDto,
+    @Req() req: any,
+  ): Promise<ApiResponse> {
     return this.postService.create(createPostDto, req);
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<ApiResponse> {
     return this.postService.findAll();
   }
 
   @Get('/:id')
-  findAllByUser(@Param('id') id: string) {
+  findAllByUser(@Param('id') id: string): Promise<ApiResponse> {
     return this.postService.findAllByUser(id);
   }
 
-  @Put('/:id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postService.update(+id, updatePostDto);
+  @Put('/update/:id')
+  update(
+    @Param('id') id: string,
+    @Body() updatePostDto: UpdatePostDto,
+  ): Promise<ApiResponse> {
+    return this.postService.update(id, updatePostDto);
   }
 
-  @Delete('/:id')
-  remove(@Param('id') id: string) {
-    return this.postService.remove(+id);
+  @Delete('/delete/:id')
+  remove(@Param('id') id: string): Promise<ApiResponse> {
+    return this.postService.remove(id);
   }
 }

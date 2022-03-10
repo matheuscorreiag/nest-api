@@ -9,6 +9,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
+import { ApiResponse } from 'src/shared/responses/response';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { Roles } from '../auth/role/role.decorator';
 import { Role } from '../auth/role/role.enum';
@@ -23,7 +24,7 @@ export class UserController {
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
-  getUser() {
+  getUser(): Promise<ApiResponse> {
     return this.userService.getUser();
   }
 
@@ -35,19 +36,22 @@ export class UserController {
 
   @HttpCode(200)
   @Post('/create')
-  create(@Body() createUserDto: CreateUserDto) {
+  create(@Body() createUserDto: CreateUserDto): Promise<ApiResponse> {
     return this.userService.create(createUserDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Put('/update/:id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<ApiResponse> {
     return this.userService.update(id, updateUserDto);
   }
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete('/delete/:id')
-  delete(@Param('id') id: string) {
+  delete(@Param('id') id: string): Promise<ApiResponse> {
     return this.userService.delete(id);
   }
 }

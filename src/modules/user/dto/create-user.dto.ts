@@ -1,4 +1,12 @@
-import { IsEmail, IsNotEmpty, Length } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  Length,
+  ValidateNested,
+} from 'class-validator';
+import { Role } from 'src/modules/auth/role/role.enum';
 
 export class CreateUserDto {
   @IsNotEmpty({ message: 'User must must have a name' })
@@ -11,7 +19,8 @@ export class CreateUserDto {
 
   @IsNotEmpty({ message: 'User must must have a name' })
   @Length(3)
-  role: string;
+  @IsEnum(Role)
+  role: Role;
 
   @IsNotEmpty({ message: 'User must have a password' })
   @Length(6)
