@@ -1,5 +1,5 @@
 import prisma from 'src/database';
-import NoUsersFoundException from 'src/modules/user/errors/NoUsersFoundException';
+import NoDataFoundException from 'src/errors/NoDataFoundException';
 import UserExistsException from 'src/modules/user/errors/UserExistsException';
 
 export const userExists = async (email?: string) => {
@@ -12,9 +12,9 @@ export const userExists = async (email?: string) => {
   if (data) throw new UserExistsException();
 };
 
-export const userNotFound = async (data: any) => {
+export const isDataFound = async (data: any) => {
   if (data instanceof Array) {
-    if (data.length === 0) throw new NoUsersFoundException();
+    if (data.length === 0) throw new NoDataFoundException();
   }
-  if (!data) throw new NoUsersFoundException();
+  if (!data) throw new NoDataFoundException();
 };

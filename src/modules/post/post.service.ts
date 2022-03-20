@@ -3,6 +3,7 @@ import prisma from 'src/database';
 import ErrorResponse from 'src/errors/ErrorResponse';
 import { IAuthUser, PrismaCatchError } from 'src/interfaces';
 import { ApiResponse } from 'src/shared/responses/response';
+import { isDataFound } from 'src/utils/existsFields';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
@@ -32,7 +33,7 @@ export class PostService {
   async findAll() {
     const data = await prisma.post.findMany();
 
-    if (data.length === 0) throw new NotFoundException();
+    await isDataFound(data);
     return { statusCode: 200, data };
   }
 
@@ -43,7 +44,8 @@ export class PostService {
       },
     });
 
-    if (data.length === 0) throw new NotFoundException();
+    await isDataFound(data);
+
     return { statusCode: 200, data };
   }
 

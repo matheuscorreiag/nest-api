@@ -5,7 +5,7 @@ import ErrorResponse from 'src/errors/ErrorResponse';
 import { PrismaCatchError } from 'src/interfaces';
 import { selectUser } from 'src/prisma/select';
 import { ApiResponse } from 'src/shared/responses/response';
-import { userExists, userNotFound } from 'src/utils/existsFields';
+import { userExists, isDataFound } from 'src/utils/existsFields';
 import { SALT_ROUNDS } from './constants';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -15,14 +15,14 @@ export class UserService {
   async getUser() {
     const data = await prisma.user.findMany({ select: selectUser });
 
-    await userNotFound(data);
+    await isDataFound(data);
 
     return { statusCode: 200, data };
   }
   async findOne(id: string): Promise<ApiResponse> {
     const user = await prisma.user.findFirst({ where: { id } });
 
-    await userNotFound(user);
+    await isDataFound(user);
 
     return { statusCode: 200, data: user };
   }
