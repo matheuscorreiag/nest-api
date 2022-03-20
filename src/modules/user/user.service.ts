@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import prisma from 'src/database';
 import ErrorResponse from 'src/errors/ErrorResponse';
 import { PrismaCatchError } from 'src/interfaces';
 import { selectUser } from 'src/prisma/select';
 import { ApiResponse } from 'src/shared/responses/response';
+import { userExists, userNotFound } from 'src/utils/existsFields';
 import { SALT_ROUNDS } from './constants';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -14,13 +15,14 @@ export class UserService {
   async getUser() {
     const data = await prisma.user.findMany({ select: selectUser });
 
-    if (data.length === 0) throw new NotFoundException('No users found');
+    await userNotFound(data);
+
     return { statusCode: 200, data };
   }
   async findOne(id: string): Promise<ApiResponse> {
     const user = await prisma.user.findFirst({ where: { id } });
 
-    if (!user) throw new NotFoundException('No users found');
+    await userNotFound(user);
 
     return { statusCode: 200, data: user };
   }
@@ -31,7 +33,10 @@ export class UserService {
     role,
   }: CreateUserDto): Promise<ApiResponse> {
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-    const data = await prisma.user
+
+    await userExists(email);
+
+    await prisma.user
       .create({
         data: {
           name,
@@ -43,7 +48,7 @@ export class UserService {
       .catch((err: PrismaCatchError) => {
         throw new ErrorResponse(err.meta.cause);
       });
-    return { statusCode: 200, data };
+    return { statusCode: 200, message: 'Usuário criado com sucesso' };
   }
   async update(
     id: string,
