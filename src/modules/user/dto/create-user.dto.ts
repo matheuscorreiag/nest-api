@@ -1,11 +1,4 @@
-import { Type } from 'class-transformer';
-import {
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  Length,
-  ValidateNested,
-} from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, Length } from 'class-validator';
 import { Role } from 'src/modules/auth/role/role.enum';
 
 export class CreateUserDto {

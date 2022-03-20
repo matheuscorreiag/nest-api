@@ -7,4 +7,6 @@ export class ApiResponse {
   data?: any;
   @IsOptional()
   error?: string;
+  @IsOptional()
+  message?: string;
 }
