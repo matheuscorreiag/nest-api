@@ -14,7 +14,7 @@ import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
-import { ApiResponse } from 'src/shared/responses/response';
+import { ApiResponse } from 'src/shared/response';
 
 @Controller('post')
 export class PostController {

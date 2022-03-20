@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import prisma from 'src/database';
 import ErrorResponse from 'src/errors/ErrorResponse';
 import { IAuthUser, PrismaCatchError } from 'src/interfaces';
-import { ApiResponse } from 'src/shared/responses/response';
-import { isDataFound } from 'src/utils/existsFields';
+import { ApiResponse } from 'src/shared/response';
+import { isDataFound } from 'src/shared/existsFields';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
