@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import prisma from 'src/database';
-import ErrorResponse from 'src/errors/ErrorResponse';
-import { PrismaCatchError } from 'src/interfaces';
-import { selectUser } from 'src/prisma/select';
-import { ApiResponse } from 'src/shared/response';
-import { userExists, isDataFound } from 'src/shared/existsFields';
+
 import { SALT_ROUNDS } from './constants';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import prisma from '../../database';
+import { selectUser } from '../../prisma/select';
+import { ApiResponse } from '../../shared/response';
+import { isDataFound, userExists } from '../../shared/existsFields';
+import { PrismaCatchError } from '../../interfaces';
+import ErrorResponse from '../../errors/ErrorResponse';
 
 @Injectable()
 export class UserService {

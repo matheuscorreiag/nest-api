@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsNotEmpty, Length } from 'class-validator';
-import { Role } from 'src/modules/auth/role/role.enum';
+import { Role } from '../../auth/role/role.enum';
 
 export class CreateUserDto {
   @IsNotEmpty({ message: 'User must must have a name' })

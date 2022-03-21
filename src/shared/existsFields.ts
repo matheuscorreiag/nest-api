@@ -1,6 +1,6 @@
-import prisma from 'src/database';
-import NoDataFoundException from 'src/errors/NoDataFoundException';
-import UserExistsException from 'src/modules/user/errors/UserExistsException';
+import prisma from '../database';
+import NoDataFoundException from '../errors/NoDataFoundException';
+import UserExistsException from '../modules/user/errors/UserExistsException';
 
 export const userExists = async (email?: string) => {
   const data = await prisma.user.findFirst({
