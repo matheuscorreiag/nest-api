@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import prisma from 'src/database';
 import ErrorResponse from 'src/errors/ErrorResponse';
 import { IAuthUser, PrismaCatchError } from 'src/interfaces';
-import { ApiResponse } from 'src/shared/response';
+import { ApiCommonResponse } from 'src/shared/response.dto';
 import { isDataFound } from 'src/shared/existsFields';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -49,7 +49,10 @@ export class PostService {
     return { statusCode: 200, data };
   }
 
-  async update(id: string, updatePostDto: UpdatePostDto): Promise<ApiResponse> {
+  async update(
+    id: string,
+    updatePostDto: UpdatePostDto,
+  ): Promise<ApiCommonResponse> {
     const { name, description } = updatePostDto;
 
     const data = await prisma.post

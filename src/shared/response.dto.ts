@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsOptional } from 'class-validator';
 
-export class ApiResponse {
+export class ApiCommonResponse {
   @IsNotEmpty()
   statusCode: number;
   @IsOptional()

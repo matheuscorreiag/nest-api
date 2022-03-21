@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
-import { SALT_ROUNDS } from './constants';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import prisma from '../../database';
 import { selectUser } from '../../prisma/select';
-import { ApiResponse } from '../../shared/response';
+import { ApiCommonResponse } from '../../shared/response.dto';
 import { isDataFound, userExists } from '../../shared/existsFields';
 import { PrismaCatchError } from '../../interfaces';
 import ErrorResponse from '../../errors/ErrorResponse';
@@ -20,8 +19,11 @@ export class UserService {
 
     return { statusCode: 200, data };
   }
-  async findOne(id: string): Promise<ApiResponse> {
-    const user = await prisma.user.findFirst({ where: { id } });
+  async findOne(id: string): Promise<ApiCommonResponse> {
+    const user = await prisma.user.findFirst({
+      select: selectUser,
+      where: { id },
+    });
 
     await isDataFound(user);
 
@@ -32,8 +34,8 @@ export class UserService {
     name,
     password,
     role,
-  }: CreateUserDto): Promise<ApiResponse> {
-    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+  }: CreateUserDto): Promise<ApiCommonResponse> {
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     await userExists(email);
 
@@ -54,7 +56,7 @@ export class UserService {
   async update(
     id: string,
     { email, name }: UpdateUserDto,
-  ): Promise<ApiResponse> {
+  ): Promise<ApiCommonResponse> {
     const data = await prisma.user
       .update({
         where: { id },
@@ -69,7 +71,7 @@ export class UserService {
 
     return { statusCode: 200, data };
   }
-  async delete(id: string): Promise<ApiResponse> {
+  async delete(id: string): Promise<ApiCommonResponse> {
     const data = await prisma.user
       .delete({
         where: { id },
