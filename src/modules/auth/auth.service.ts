@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import prisma from 'src/database';
+import prisma from '../../database';
 import * as bcrypt from 'bcrypt';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { JwtService } from '@nestjs/jwt';
-import InvalidCredentialsException from 'src/errors/InvalidCredentialsException';
+import InvalidCredentialsException from '../../errors/InvalidCredentialsException';
 @Injectable()
 export class AuthService {
   constructor(private jwtService: JwtService) {}

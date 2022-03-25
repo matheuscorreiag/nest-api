@@ -14,7 +14,7 @@ import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
-import { ApiCommonResponse } from 'src/shared/response.dto';
+import { ApiCommonResponse } from '../../shared/response.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @Controller('post')

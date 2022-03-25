@@ -20,7 +20,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("users")
+
 }
 
 model Post {
@@ -30,5 +30,4 @@ model Post {
   user        User   @relation(fields: [userId], references: [id])
   userId      String
 
-  @@map("posts")
 }
