@@ -13,7 +13,11 @@ import ErrorResponse from '../../errors/ErrorResponse';
 @Injectable()
 export class UserService {
   async getUser() {
-    const data = await prisma.user.findMany({ select: selectUser });
+    const data = await prisma.user
+      .findMany({ select: selectUser })
+      .catch((err: PrismaCatchError) => {
+        throw new ErrorResponse(err.meta.cause);
+      });
 
     await isDataFound(data);
 
