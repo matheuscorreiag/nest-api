@@ -29,6 +29,8 @@ export class AdministrationController {
   ): Promise<ApiCommonResponse> {
     return this.administrationService.create(req.user, createAdministrationDto);
   }
+
+  @ApiTags('reports')
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.administrationService.findOne(id);
