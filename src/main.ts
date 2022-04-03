@@ -9,10 +9,12 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Nest API')
     .setDescription('The Nest API description')
     .setVersion('1.0')
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
   fs.writeFileSync('./swagger-docs.json', JSON.stringify(document));
   SwaggerModule.setup('api', app, document);

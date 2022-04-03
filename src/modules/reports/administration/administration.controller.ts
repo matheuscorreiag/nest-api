@@ -13,8 +13,9 @@ import { CreateAdministrationReportDto } from './dto/create-administration.dto';
 
 import { AdministrationService } from './administration.service';
 import { UpdateAdministrationDto } from './dto/update-administration.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
+@ApiSecurity('bearer')
 @Controller('/reports/administration')
 export class AdministrationController {
   constructor(

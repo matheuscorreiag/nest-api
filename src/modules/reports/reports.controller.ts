@@ -1,8 +1,9 @@
 import { Controller, Delete, Get, Param } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { IReports } from '../../shared/interfaces/reports.interface';
 import { ReportsService } from './reports.service';
 
+@ApiSecurity('bearer')
 @Controller('reports')
 export class ReportsController {
   constructor(private readonly reportsService: ReportsService<IReports>) {}

@@ -9,7 +9,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { ApiCommonResponse } from '../../shared/response.dto';
 
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
@@ -20,6 +20,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
+@ApiSecurity('bearer')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
