@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+    nestApi:
+        container_name: nestApi
+        hostname: nestApi
+        image: postgres:10.5
+        restart: always
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+          - POSTGRES_DB=nestApi
+        logging:
+          options:
+            max-size: 10m
+            max-file: "3"
+        ports:
+          - '5438:5432'
+        volumes: 
+          - ./postgres-data:/var/lib/postgresql/data
+          # copy the sql script to create tables
+          - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+        networks:
+          - nestApi-network
+
+networks:
+  nestApi-network:
+    name: nestApi-network
+    driver: bridge

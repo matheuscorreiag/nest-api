@@ -38,3 +38,13 @@ lerna-debug.log*
 
 prisma/dev.db
 prisma/migrations
+
+
+#postgres-config
+
+postgres-data/
+
+
+
+#env
+.env
