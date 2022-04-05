@@ -1,4 +1,4 @@
-import { Injectable, Req, Type } from '@nestjs/common';
+import { Injectable, Req } from '@nestjs/common';
 import prisma from '../../database';
 import { ApiCommonResponse } from '../../shared/response.dto';
 import UserNotFoundException from '../user/errors/UserNotFoundException';
@@ -6,11 +6,18 @@ import ErrorResponse from '../../errors/ErrorResponse';
 import { IReportsService } from './interfaces';
 import { Prisma, reportType } from '@prisma/client';
 import { isDataFound } from '../../shared/existsFields';
+import {
+  IAuthUser,
+  NestRequest,
+} from '../../shared/interfaces/users.interface';
 
 @Injectable()
 export class ReportsService<Type> implements IReportsService<Type> {
-  async create(@Req() req: any, data: Type): Promise<ApiCommonResponse> {
-    const user = req?.user;
+  async create(
+    @Req() req: NestRequest,
+    data: Type,
+  ): Promise<ApiCommonResponse> {
+    const user: IAuthUser = req?.user;
 
     if (!user) throw new UserNotFoundException();
 
@@ -49,13 +56,9 @@ export class ReportsService<Type> implements IReportsService<Type> {
     return { statusCode: 200, data: report };
   }
 
-  async update(
-    id: string,
-    updateReportDto: Type,
-    typeOfReport: reportType,
-  ): Promise<ApiCommonResponse> {
+  async update(id: string, updateReportDto: Type): Promise<ApiCommonResponse> {
     const report = await prisma.reports.findFirst({
-      where: { id, reportType: typeOfReport },
+      where: { id },
     });
 
     await isDataFound(report);

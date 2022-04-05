@@ -17,7 +17,11 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   fs.writeFileSync('./swagger-docs.json', JSON.stringify(document));
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, {
+    swaggerOptions: {
+      docExpansion: 'none',
+    },
+  });
 
   await app.listen(3000);
 }

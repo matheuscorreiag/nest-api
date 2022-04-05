@@ -16,6 +16,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { ApiCommonResponse } from '../../shared/response.dto';
 import { ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { NestRequest } from '../../shared/interfaces/users.interface';
 
 @ApiSecurity('bearer')
 @Controller('post')
@@ -28,7 +29,7 @@ export class PostController {
   @Post('/create')
   create(
     @Body() createPostDto: CreatePostDto,
-    @Req() req: any,
+    @Req() req: NestRequest,
   ): Promise<ApiCommonResponse> {
     return this.postService.create(createPostDto, req);
   }

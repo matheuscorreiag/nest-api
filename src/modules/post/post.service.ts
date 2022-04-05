@@ -1,16 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import prisma from '../../database';
-import { IAuthUser, PrismaCatchError } from '../../interfaces';
+import { PrismaCatchError } from '../../interfaces';
 import { ApiCommonResponse } from '../../shared/response.dto';
 import { isDataFound, userExistsById } from '../../shared/existsFields';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import ErrorResponse from '../../errors/ErrorResponse';
+import { IAuthUser } from '../../shared/interfaces/users.interface';
 
 @Injectable()
 export class PostService {
   async create({ name, description }: CreatePostDto, req: any) {
-    const user: IAuthUser = req.user;
+    const user: IAuthUser = req?.user;
 
     await userExistsById(user?.id);
 
