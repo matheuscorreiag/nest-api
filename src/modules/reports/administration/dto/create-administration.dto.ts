@@ -1,14 +1,8 @@
 import { reportType } from '@prisma/client';
-import {
-  IsDate,
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-} from 'class-validator';
+import { Equals, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateAdministrationReportDto {
-  @IsEnum(reportType)
+  @Equals(reportType.administration)
   @IsNotEmpty()
   reportType: reportType;
 

@@ -1,5 +1,3 @@
-import { reportType } from '@prisma/client';
-
 export interface IReports
   extends IAdministrationReport,
     IHealthSecurityReport,
@@ -7,7 +5,7 @@ export interface IReports
 
 export interface IAdministrationReport {
   id?: string;
-  reportType: reportType;
+  reportType?: string;
   date?: Date;
   farm: string;
   manager: string;
@@ -16,7 +14,7 @@ export interface IAdministrationReport {
 
 export interface IHealthSecurityReport {
   id?: string;
-  reportType: reportType;
+  reportType?: string;
   date?: Date;
   farm: string;
   manager: string;
@@ -24,7 +22,7 @@ export interface IHealthSecurityReport {
 }
 export interface IFarmReport {
   id?: string;
-  reportType: reportType;
+  reportType?: string;
   date?: Date;
   farm: string;
   manager: string;
